@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+</head>
+<body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="Car.js"></script>
+    <script src="Rectangle.js"></script>
+</head>
+<body>
+
+<canvas id="myCanvas"></canvas>
+
+<script>
+    let canvas = document.getElementById('myCanvas');
+    let c = canvas.getContext('2d');
+    canvas.width = 1024;
+    canvas.height = 576;
+    canvas.style.border = '3px solid black';
+
+
+    let carImgUp = new Image();
+    carImgUp.src = 'CarUp.png';
+    let carImgDown = new Image();
+    carImgDown.src = 'CarDown.png';
+    let carImgLeft = new Image();
+    carImgLeft.src = 'CarLeft.png';
+    let carImgRight = new Image();
+    carImgRight.src = 'CarRight.png';
+
+
+    let keys = {
+        left: false,
+        right: false,
+        up: false,
+        down: false,
+    }
+
+    // let isCollid=false;
+
+    // Rectangle class-----------------------------------------------------------
+
+
+    let rect1 = new Rectangle(500, 300, 30, 100, 'blue');
+    let rect2 = new Rectangle(700, 300, 30, 100, 'green');
+
+    function drawVatCan() {
+        rect1.drawRect(c);
+        rect2.drawRect(c);
+    }
+
+    //Car-Class---------------------------------------------------------------
+
+
+    let car = new Car({
+        sprites: {
+            up: carImgUp,
+            down: carImgDown,
+            left: carImgLeft,
+            right: carImgRight,
+        },
+        position: {
+            x: 300,
+            y: 300
+        },
+        image: carImgUp,
+    })
+    // //System-------------------------------------------------------------------
+    //
+    animate();
+    //
+    //
+    function animate() {
+        car.draw();
+        drawVatCan();
+        if(checkCollision(rect1)) {
+            c.fillStyle = 'red'
+            c.font = '55px Arial';
+            c.fillText('NGU, QUAY ĐẦU XE ĐI LẠI',100,100)
+        }
+        if(checkCollision(rect2)) {
+            c.fillStyle = 'red'
+            c.font = '55px Arial';
+            c.fillText('NGU, QUAY ĐẦU XE ĐI LẠI',100,100)
+        }
+        car.move();
+        requestAnimationFrame(animate);
+    }
+
+    window.addEventListener('keydown', e => {
+        switch (e.keyCode) {
+            case 37:
+                keys.left = true;
+                break;
+            case 38:
+                keys.up = true;
+                break;
+            case 39:
+                keys.right = true;
+                break;
+            case 40:
+                keys.down = true;
+                break;
+            case 17:
+                car.speed = 2
+                break;
+        }
+    })
+    window.addEventListener('keyup', e => {
+        switch (e.keyCode) {
+            case 37:
+                keys.left = false;
+                break;
+            case 38:
+                keys.up = false;
+                break;
+            case 39:
+                keys.right = false;
+                break;
+            case 40:
+                keys.down = false;
+                break;
+            case 17:
+                car.speed = 1;
+                break;
+        }
+    })
+
+    // // Check Collision ----------------------------
+    function checkCollision(rect) {
+        return ( car.position.x + car.image.width / 2  > rect.x && car.position.x - car.image.width / 2 < rect.x + rect.width
+            && car.position.y + car.image.height / 2 > rect.y && car.position.y - car.image.height / 2 <= rect.y +  + rect.height)
+
+    }
+</script>
+
+</body>
+</html>
+</body>
+</html>
